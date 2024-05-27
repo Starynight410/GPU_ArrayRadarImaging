@@ -13,7 +13,7 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 # 成像结果
 流程：误差校准 + range_fft + 2DBP
 
-雷达采集1帧数据为：8路并行，512 点, 32 Chirp, 32个收发通道
+雷达采集1帧数据为：8路并行，512 点, 32 Chirp, 每一路32个收发通道
 
 测试目标角反位于50cm，方位俯仰角大约0°处，成像角度范围为-30°~30°。点目标成像结果:
 
