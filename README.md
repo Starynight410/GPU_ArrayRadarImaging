@@ -4,7 +4,7 @@
 # 开发环境
 Linux Ubuntu 18.04, CUDA 12.0
 
-编译运行：
+# 编译运行
 
 nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
 
@@ -17,8 +17,8 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 
 测试目标角反位于50cm，方位俯仰角大约0°处，成像角度范围为-30°~30°。点目标成像结果:
 
+![image](image/50cm00.jpg)
+
 Version 1
 
 耗时：11.1002s (-30,30)
-
-![image](image/50cm00.jpg)
