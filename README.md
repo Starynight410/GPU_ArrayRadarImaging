@@ -5,6 +5,7 @@
 Linux Ubuntu 18.04, CUDA 12.0
 
 编译运行：
+
 nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
 
 ./ArrayImaging
@@ -19,3 +20,5 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 Version 1
 
 耗时：11.1002s (-30,30)
+
+![image]{image/50cm00.jpg}
