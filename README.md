@@ -21,4 +21,4 @@ Version 1
 
 耗时：11.1002s (-30,30)
 
-![image]{image/50cm00.jpg}
+![image](image/50cm00.jpg)
