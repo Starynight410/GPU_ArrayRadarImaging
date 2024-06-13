@@ -11,7 +11,7 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 ./ArrayImaging
 
 # 成像结果
-1.单个距离切片的二维成像
+## 1.单个距离切片的二维成像
 
 流程：误差校准 + range_fft + 2DBP
 
@@ -24,10 +24,12 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 
 耗时：11.1002s (-30,30)
 
-2.三维点云成像
+
+## 2.三维点云成像
 
 流程：误差校准 + range_fft + 1D_CFAR(这里直接取目标位置附近做切片) + 2DBP + 2D_CFAR
 
-进行3维成像读执行结果
+3维成像的执行结果
 
 ![image](image/3D成像运行结果.jpg)
+
