@@ -15,7 +15,7 @@
 
     Type `make` to compile the program. Alternatively, type the following commands:
 
-    nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
+    nvcc -o ArrayImaging3D ArrayImaging3D.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
     nvcc -lcublas test.cpp -o t
    
 ****************************************************************************/
