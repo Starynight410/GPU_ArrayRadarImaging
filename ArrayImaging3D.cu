@@ -566,7 +566,7 @@ int main()
 
         for (int i = 0; i < Naz_net; i++) {
             for (int j = 0; j < Nay_net; j++) {
-                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (3.7 * Threshold)) // default: 2.7
+                if (PC_data_ifft_CA_abs[j+i*Nay_net] >= (3.7 * Threshold)) // default: 3.7
                 {
                     location[tt*Naz_net*Nay_net + i*Naz_net + j] = 1;
                     // printf("i=%d\t j=%d\n", i, j);
