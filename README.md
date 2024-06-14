@@ -38,3 +38,6 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 
 ![image](image/3D成像运行结果.jpg)
 
+点云成像结果
+
+![image](image/点目标点云.png)
