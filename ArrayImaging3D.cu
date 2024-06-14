@@ -15,7 +15,7 @@
 
     Type `make` to compile the program. Alternatively, type the following commands:
 
-    nvcc -o ArrayImaging3D ArrayImaging3D.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
+    nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
     nvcc -lcublas test.cpp -o t
    
 ****************************************************************************/
@@ -297,8 +297,9 @@ int main()
 
     // 目标距离维搜索
     int RtarId = maxSearch(mo, nfft_r/2);
-    int Nax_net = 5;                    // 距离维网格数,前后共Nax_net个,为奇数
-    double Nax_net_div = c/2/B_real;
+    int Nax_net = 1;                    // 距离维网格数,前后共Nax_net个,为奇数
+
+    double Nax_net_div = c/2/B_real/5;
     double Rtar_s[Nax_net];
     printf("目标所在距离:");
     for(int i = 0; i < Nax_net; i++)
@@ -408,11 +409,11 @@ int main()
     }
 
     // ========================2D-CFAR初始化变量======================== 
-	int const N_ref_2D = 6; 
+	int const N_ref_2D = 8; 
     double SNR_Threshold = 28;  // default: 28
 
     int* location = NULL; 
-    cudaMallocHost((void**)&location, Nay_net * Naz_net * sizeof(int));
+    cudaMallocHost((void**)&location, Nay_net * Naz_net * Nax_net * sizeof(int));
 
     // 存放一维化成像结果
 	double* PC_data_ifft_CA_abs = NULL; 
@@ -520,7 +521,7 @@ int main()
         cudaMalloc((void**)&d_PC_data_ifft_CA_abs, Naz_net * Nay_net * sizeof(double));
         cudaMemcpy(d_PC_data_ifft_CA_abs, PC_data_ifft_CA_abs, Naz_net * Nay_net * sizeof(double), cudaMemcpyHostToDevice);
         cudaMalloc((void**)&d_sum_ref_2D, 4 * sizeof(double));
-        calc_sum_ref_2D << <1, N_ref_2D*N_ref_2D >> > (d_PC_data_ifft_CA_abs, d_sum_ref_2D, Naz_net, N_ref_2D, Nay_net);
+        calc_sum_ref_2D << < 1, N_ref_2D*N_ref_2D >> > (d_PC_data_ifft_CA_abs, d_sum_ref_2D, Naz_net, N_ref_2D, Nay_net);
         cudaMemcpy(sum_ref_2D, d_sum_ref_2D, 4 * sizeof(double), cudaMemcpyDeviceToHost);
         cudaFree(d_PC_data_ifft_CA_abs); //释放显存
         cudaFree(d_sum_ref_2D); //释放显存
@@ -553,7 +554,7 @@ int main()
 
         //寻找PC_data_ifft_CA中大于门限的点并记录其位置
 
-    //  int const M_row = Nay_net / 2;
+        int const M_row = Nay_net / 2;
     //	int location[M_row][N_point];
 
         // 将location数组中的所有元素设置为0
@@ -565,8 +566,9 @@ int main()
 
         for (int i = 0; i < Naz_net; i++) {
             for (int j = 0; j < Nay_net; j++) {
-                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (0.5 * Threshold)) {
-                    location[i * Naz_net + j] = 1;
+                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (3.7 * Threshold)) // default: 2.7
+                {
+                    location[tt*Naz_net*Nay_net + i*Naz_net + j] = 1;
                     // printf("i=%d\t j=%d\n", i, j);
                     // printf("%f\n", PC_data_ifft_CA_abs[i * Naz_net + j]);
                 }
@@ -643,8 +645,12 @@ int main()
 
 
     // ========================释放========================
-    free(PC_data_ifft_CA_abs); // 释放数组内存空间
-
+    if (PC_data_ifft_CA_abs != NULL)
+	{
+        free(PC_data_ifft_CA_abs);
+        PC_data_ifft_CA_abs = NULL;
+    }
+    
 	if (T_sence_left != NULL)
 	{
 		free(T_sence_left);
