@@ -411,7 +411,7 @@ int main()
 	int const N_ref_2D = 6; 
     double SNR_Threshold = 28;  // default: 28
 
-    int* location = NULL; // 定义指向float类型的指针
+    int* location = NULL; 
     cudaMallocHost((void**)&location, Nay_net * Naz_net * sizeof(int));
 
     // 存放一维化成像结果
@@ -553,7 +553,7 @@ int main()
 
         //寻找PC_data_ifft_CA中大于门限的点并记录其位置
 
-        int const M_row = Nay_net / 2;
+    //  int const M_row = Nay_net / 2;
     //	int location[M_row][N_point];
 
         // 将location数组中的所有元素设置为0
@@ -563,15 +563,15 @@ int main()
             }
         }*/
 
-        for (int i = 0; i < M_row; i++) {
-            for (int j = 0; j < Naz_net; j++) {
-                if (PC_data_ifft_CA_abs[i * Naz_net + j] >= (1 * Threshold)) {
+        for (int i = 0; i < Naz_net; i++) {
+            for (int j = 0; j < Nay_net; j++) {
+                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (1 * Threshold)) {
                     location[i * Naz_net + j] = 1;
                     // printf("i=%d\t j=%d\n", i, j);
                     // printf("%f\n", PC_data_ifft_CA_abs[i * Naz_net + j]);
                 }
                 else {
-                    location[i * Naz_net + j] = 0;
+                    location[tt*Naz_net*Nay_net + i*Naz_net + j] = 0;
                 }
             }
         }
