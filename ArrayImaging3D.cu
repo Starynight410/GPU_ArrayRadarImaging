@@ -565,7 +565,7 @@ int main()
 
         for (int i = 0; i < Naz_net; i++) {
             for (int j = 0; j < Nay_net; j++) {
-                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (1 * Threshold)) {
+                if (PC_data_ifft_CA_abs[tt*Naz_net*Nay_net + i*Naz_net + j] >= (0.5 * Threshold)) {
                     location[i * Naz_net + j] = 1;
                     // printf("i=%d\t j=%d\n", i, j);
                     // printf("%f\n", PC_data_ifft_CA_abs[i * Naz_net + j]);
