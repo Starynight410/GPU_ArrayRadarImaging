@@ -5,6 +5,13 @@
 
 雷达采集1帧数据为：8路并行，512 点, 32 Chirp, 每一路32个收发通道
 
+# 版本说明
+v1：直接通过CPU计算成像，（只有CFAR采用CUDA库函数实现）
+
+v2：对计算A_Comp补偿因子划分Na个Grid,每个Grid包含Naz_net*Nay_net的二维block
+
+v3：CUDA实现成像的并行加速
+
 # 开发环境
 Linux Ubuntu 18.04, CUDA 12.0
 
