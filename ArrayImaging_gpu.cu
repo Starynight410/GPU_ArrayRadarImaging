@@ -588,53 +588,6 @@ __global__ void calculateBrightness(
     }
 }
 
-// // 亮温反演 CUDA 内核函数
-// __global__ void calculateBrightness(
-//     cuDoubleComplex *A_Comp, 
-//     cuDoubleComplex *R_sigdata, 
-//     double *T_sence_mo, 
-//     int Na, 
-//     int Naz_net, 
-//     int Nay_net
-// ) {
-//     int i = blockIdx.y;
-//     int j = blockIdx.x;
-    
-//     if (i < Naz_net && j < Nay_net) {
-//         cuDoubleComplex T_sence_left[256];
-//         cuDoubleComplex T_sence = make_cuDoubleComplex(0, 0);
-        
-//         // 初始化T_sence_left数组
-//         for (int k = 0; k < Na; k++) {
-//             T_sence_left[k] = make_cuDoubleComplex(0, 0);
-//         }
-
-//         // 计算第一步乘结果
-//         for (int k = 0; k < Na; k++) {
-//             for (int k2 = 0; k2 < Na; k2++) {
-//                 int idx = j * Naz_net * Na + i * Na + k2;
-//                 int r_idx = k2 * Na + k;
-                
-//                 // 计算T_sence_left
-//                 T_sence_left[k].x += A_Comp[idx].x * R_sigdata[r_idx].x + A_Comp[idx].y * R_sigdata[r_idx].y;
-//                 T_sence_left[k].y += A_Comp[idx].x * R_sigdata[r_idx].y - A_Comp[idx].y * R_sigdata[r_idx].x;
-//             }
-//         }
-
-//         // 计算网格亮温值
-//         for (int k = 0; k < Na; k++) {
-//             int idx = j * Naz_net * Na + i * Na + k;
-            
-//             // 计算T_sence
-//             T_sence.x += T_sence_left[k].x * A_Comp[idx].x - T_sence_left[k].y * A_Comp[idx].y;
-//             T_sence.y += T_sence_left[k].x * A_Comp[idx].y + T_sence_left[k].y * A_Comp[idx].x;
-//         }
-
-//         // 计算亮度并存储到T_sence_mo
-//         T_sence_mo[i * Nay_net + j] = sqrt(T_sence.x * T_sence.x + T_sence.y * T_sence.y); // 取模
-//     }
-// }
-
 // 计算A_Comp
 __global__ void computeAComp(
     cufftDoubleComplex *A_Comp, 
