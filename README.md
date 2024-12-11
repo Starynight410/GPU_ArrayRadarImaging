@@ -11,7 +11,7 @@ _cpu：直接通过CPU计算成像(CFAR采用CUDA库函数实现)
 _gpu：划分Na个Grid,每个Grid包含Naz_net*Nay_net的二维block,用于计算A_Comp补偿因子以及亮温反演
 
 # 开发环境
-Linux Ubuntu 18.04, CUDA 12.0
+Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 
 # CUDA优化方法
 1)循环展开：手动展开内层循环以减少循环控制的开销。
@@ -33,7 +33,7 @@ Linux Ubuntu 18.04, CUDA 12.0
 
 cpu版本耗时：11.1002s (-30,30)
 
-gpu版本耗时：1.5252s (-30,30)  加速比：727.7%
+gpu版本耗时：1.0224s (-30,30)      加速比：1085.70%
 
 ## 2.三维点云成像
 
