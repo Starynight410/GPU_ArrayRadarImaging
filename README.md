@@ -6,20 +6,17 @@
 雷达采集1帧数据为：8路并行，512 点, 32 Chirp, 每一路32个收发通道
 
 # 版本说明
-v1：直接通过CPU计算成像，（只有CFAR采用CUDA库函数实现）
+_cpu：直接通过CPU计算成像(CFAR采用CUDA库函数实现)
 
-v2：对计算A_Comp补偿因子划分Na个Grid,每个Grid包含Naz_net*Nay_net的二维block
-
-v3：CUDA实现成像的并行加速
+_gpu：划分Na个Grid,每个Grid包含Naz_net*Nay_net的二维block,用于计算A_Comp补偿因子以及亮温反演
 
 # 开发环境
 Linux Ubuntu 18.04, CUDA 12.0
 
-# 编译运行
+# CUDA优化方法
+1)循环展开：手动展开内层循环以减少循环控制的开销。
 
-nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas -lcufft
-
-./ArrayImaging
+2)向量化操作：尽量使用更多的线程来并行处理数据。
 
 # 成像结果
 ## 1.单个距离切片的二维成像
@@ -34,8 +31,9 @@ nvcc -o ArrayImaging ArrayImaging.cu --ptxas-options=-v --use_fast_math -lcublas
 
 ![image](image/点目标CFAR.png)
 
-耗时：11.1002s (-30,30)
+cpu版本耗时：11.1002s (-30,30)
 
+gpu版本耗时：1.5252s (-30,30)  加速比：727.7%
 
 ## 2.三维点云成像
 
