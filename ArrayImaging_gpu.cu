@@ -549,34 +549,36 @@ __global__ void calculateBrightness(
             T_sence_left[k] = make_cuDoubleComplex(0, 0);
         }
 
-        // 计算第一步乘结果，循环展开
-        for (int k = 0; k < Na; k++) {
-            for (int k2 = 0; k2 < Na; k2 += 2) { // 循环展开，每次处理两个元素
-                int idx_comp = idx * Naz_net * Na + idy * Na + k2;
-                int idx_r = k2 * Na + k;
+        // 向量化内存访问，每次处理4个元素
+        for (int k = 0; k < Na; k += 4) {
+            int idx_comp = (idx * Naz_net + idy) * Na + k;
+            int idx_r = k * Na + threadIdx.y;
 
-                cuDoubleComplex a_comp = A_Comp[idx_comp];
-                cuDoubleComplex r_sig = R_sigdata[idx_r];
+            cuDoubleComplex a_comp1 = A_Comp[idx_comp];
+            cuDoubleComplex a_comp2 = A_Comp[idx_comp + 1];
+            cuDoubleComplex a_comp3 = A_Comp[idx_comp + 2];
+            cuDoubleComplex a_comp4 = A_Comp[idx_comp + 3];
+            cuDoubleComplex r_sig1 = R_sigdata[idx_r];
+            cuDoubleComplex r_sig2 = R_sigdata[idx_r + Na];
+            cuDoubleComplex r_sig3 = R_sigdata[idx_r + 2 * Na];
+            cuDoubleComplex r_sig4 = R_sigdata[idx_r + 3 * Na];
 
-                T_sence_left[k].x += a_comp.x * r_sig.x + a_comp.y * r_sig.y;
-                T_sence_left[k].y += a_comp.x * r_sig.y - a_comp.y * r_sig.x;
+            T_sence_left[threadIdx.y].x += a_comp1.x * r_sig1.x + a_comp1.y * r_sig1.y;
+            T_sence_left[threadIdx.y].y += a_comp1.x * r_sig1.y - a_comp1.y * r_sig1.x;
 
-                if (k2 + 1 < Na) {
-                    idx_comp = idx * Naz_net * Na + idy * Na + k2 + 1;
-                    idx_r = (k2 + 1) * Na + k;
+            T_sence_left[threadIdx.y + 1].x += a_comp2.x * r_sig2.x + a_comp2.y * r_sig2.y;
+            T_sence_left[threadIdx.y + 1].y += a_comp2.x * r_sig2.y - a_comp2.y * r_sig2.x;
 
-                    a_comp = A_Comp[idx_comp];
-                    r_sig = R_sigdata[idx_r];
+            T_sence_left[threadIdx.y + 2].x += a_comp3.x * r_sig3.x + a_comp3.y * r_sig3.y;
+            T_sence_left[threadIdx.y + 2].y += a_comp3.x * r_sig3.y - a_comp3.y * r_sig3.x;
 
-                    T_sence_left[k].x += a_comp.x * r_sig.x + a_comp.y * r_sig.y;
-                    T_sence_left[k].y += a_comp.x * r_sig.y - a_comp.y * r_sig.x;
-                }
-            }
+            T_sence_left[threadIdx.y + 3].x += a_comp4.x * r_sig4.x + a_comp4.y * r_sig4.y;
+            T_sence_left[threadIdx.y + 3].y += a_comp4.x * r_sig4.y - a_comp4.y * r_sig4.x;
         }
 
         // 计算网格亮温值
         for (int k = 0; k < Na; k++) {
-            int idx_comp = idx * Naz_net * Na + idy * Na + k;
+            int idx_comp = (idx * Naz_net + idy) * Na + k;
             cuDoubleComplex a_comp = A_Comp[idx_comp];
 
             T_sence.x += T_sence_left[k].x * a_comp.x - T_sence_left[k].y * a_comp.y;
