@@ -28,11 +28,15 @@ Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 
 测试目标角反位于50cm，方位俯仰角大约0°处，成像角度范围为-30°~30°。点目标成像结果:
 
-![image](image/50cm00.jpg)
+![image](image/单目标.png)
 
 通过CUDA对当前距离切片做2维CA-CFAR后得到目标位置:
 
 ![image](image/点目标CFAR.png)
+
+测试目标角反位于50cm，俯仰角0°，方位角双目标0°和10°处，。双目标成像结果:
+
+![image](image/双目标1.png)
 
 cpu版本耗时：11.1002s (-30,30)
 
