@@ -30,10 +30,6 @@ Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 
 ![image](image/单目标.png)
 
-通过CUDA对当前距离切片做2维CA-CFAR后得到目标位置:
-
-![image](image/点目标CFAR.png)
-
 测试目标角反位于50cm，方位、俯仰角0°和10°双目标，。双目标成像结果:
 
 ![image](image/双目标1.png)
@@ -43,6 +39,10 @@ Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 cpu版本耗时：11.1002s (-30,30)
 
 gpu版本耗时：1.0224s (-30,30)      加速比：1085.70%
+
+通过CUDA对当前距离切片做2维CA-CFAR后得到目标位置:
+
+![image](image/点目标CFAR.png)
 
 ## 2.三维点云成像
 
