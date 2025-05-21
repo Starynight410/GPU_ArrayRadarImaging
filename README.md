@@ -15,6 +15,8 @@ _cpu：直接通过CPU计算成像(CFAR采用CUDA库函数实现)
 
 _gpu：划分Na个Grid,每个Grid包含Naz_net*Nay_net的二维block,用于计算A_Comp补偿因子以及亮温反演
 
+SampleImaging_v1：通过4-line SPI传输的数据解析以及成像，用于高速采集系统
+
 # 开发环境
 Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 
@@ -40,7 +42,7 @@ Linux Ubuntu 18.04, CUDA 12.0, Nv T1000
 
 cpu版本耗时：11.1002s (-30,30)
 
-gpu版本耗时：1.0224s (-30,30)      加速比：1085.70%
+gpu版本耗时：1.0224s (-30,30)      加速比：10.85
 
 通过CUDA对当前距离切片做2维CA-CFAR后得到目标位置:
 
@@ -63,4 +65,3 @@ gpu版本耗时：1.0224s (-30,30)      加速比：1085.70%
 根据硬件层数据包格式进行解析，存于SampleImaging_v1.cu，数据格式如图所示：
 
 ![image](image/雷达回波解析.png)
-
